@@ -1,7 +1,9 @@
 import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
-import { permutations, editDistance } from "../utils";
+import { editDistance } from "../utils";
 import VPTree from "mnemonist/vp-tree";
 import { intersection, difference } from "mnemonist/set";
+import { permutations } from "obliterator"
+
 
 function cowsDistance(a: string, b: string) {
   let distance = 0;
@@ -33,7 +35,7 @@ export function calculateSolutionSpace(
   solutionLength: number
 ): Set<string> {
   const result = new Set<string>();
-  for (const permutation of permutations(symbolSpace, solutionLength)) {
+  for (const permutation of permutations([...symbolSpace], solutionLength)) {
     if (permutation[0] !== ILLEGAL_STARTING_CHARACTER)
       result.add(permutation.join(""));
   }
