@@ -1,23 +1,26 @@
 import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
-import { editDistance } from "../utils";
 import VPTree from "mnemonist/vp-tree";
 import { intersection, difference } from "mnemonist/set";
-import { permutations } from "obliterator"
+import { permutations } from "obliterator";
+import { SortedSet } from "collections/sorted-set";
 
-
-function cowsDistance(a: string, b: string) {
-  let distance = 0;
-  for (const c of a) {
-    if (!b.includes(c)) distance++;
+function bullsDistance(a: SortedSet, b: SortedSet) {
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) result++;
   }
-  return distance;
+  return result;
 }
 
-async function buildBullsSearchTree(solutionSpace: Iterable<string>) {
-  return VPTree.from(solutionSpace, editDistance);
+function cowsDistance(a: SortedSet, b: SortedSet) {
+  return a.difference(b).size;
 }
 
-async function buildCowsSearchTree(solutionSpace: Iterable<string>) {
+async function buildBullsSearchTree(solutionSpace: Iterable<SortedSet>) {
+  return VPTree.from(solutionSpace, bullsDistance);
+}
+
+async function buildCowsSearchTree(solutionSpace: Iterable<SortedSet>) {
   return VPTree.from(solutionSpace, cowsDistance);
 }
 
@@ -34,10 +37,10 @@ export function calculateSolutionSpace(
   symbolSpace: Iterable<string>,
   solutionLength: number
 ): Set<string> {
-  const result = new Set<string>();
+  const result = new Set<SortedSet>();
   for (const permutation of permutations([...symbolSpace], solutionLength)) {
     if (permutation[0] !== ILLEGAL_STARTING_CHARACTER)
-      result.add(permutation.join(""));
+      result.add(new SortedSet(permutation));
   }
   return result;
 }

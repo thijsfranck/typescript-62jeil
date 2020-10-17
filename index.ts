@@ -4,6 +4,7 @@ import {
   buildSearchTrees,
   updateSolutionSpace
 } from "./game";
+import { SortedSet } from "collections/sorted-set";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
   let symbolSpace = calculateSymbolSpace(symbolSpaceLength);
@@ -19,7 +20,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   );
   console.timeEnd("Building the search trees");
 
-  const guess = "1230",
+  const guess = new SortedSet([1, 2, 3, 0]),
     bulls = 0,
     cows = 1;
 
