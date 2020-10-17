@@ -36,7 +36,7 @@ export async function buildSearchTrees(
 export function calculateSolutionSpace(
   symbolSpace: Iterable<string>,
   solutionLength: number
-): Set<string> {
+): Set<SortedSet> {
   const result = new Set<SortedSet>();
   for (const permutation of permutations([...symbolSpace], solutionLength)) {
     if (permutation[0] !== ILLEGAL_STARTING_CHARACTER)
@@ -50,11 +50,11 @@ export function getItemsFromTree(searchTree: VPTree<string>): string[] {
 }
 
 function calculateRemainingSolutions(
-  solutionSpace: Set<string>,
-  searchTree: VPTree<string>,
-  guess: string,
+  solutionSpace: Set<SortedSet>,
+  searchTree: VPTree<SortedSet>,
+  guess: SortedSet,
   validPositions: number
-): Set<string> {
+): Set<SortedSet> {
   if (validPositions === 0) return solutionSpace;
   const neighbors = searchTree.neighbors(guess.length - validPositions, guess);
   return new Set(neighbors.map(neighbor => neighbor.item));
@@ -62,14 +62,13 @@ function calculateRemainingSolutions(
 
 export function updateSolutionSpace(
   currentSymbolSpace: Set<string>,
-  currentSolutionSpace: Set<string>,
-  bullsSearchTree: VPTree<string>,
-  cowsSearchTree: VPTree<string>,
-  guess: string,
-  solutionLength: number,
+  currentSolutionSpace: Set<SortedSet>,
+  bullsSearchTree: VPTree<SortedSet>,
+  cowsSearchTree: VPTree<SortedSet>,
+  guess: SortedSet,
   bulls: number = 0,
   cows: number = 0
-): [Set<string>, Set<string>] {
+): [Set<string>, Set<SortedSet>] {
   let validSymbolSpace = currentSymbolSpace,
     validSolutionSpace = currentSolutionSpace;
 
@@ -92,7 +91,7 @@ export function updateSolutionSpace(
 
     validSolutionSpace = intersection(
       validSolutionSpace,
-      calculateSolutionSpace(validSymbolSpace, solutionLength)
+      calculateSolutionSpace(validSymbolSpace, guess.size)
     );
   }
   return [validSymbolSpace, validSolutionSpace];

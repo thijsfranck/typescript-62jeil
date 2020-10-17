@@ -13,8 +13,8 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   let solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
   console.timeEnd("Calculating the initial solution space");
   console.log(`Initial solution space size: ${solutionSpace.size}`);
-
   console.time("Building the search trees");
+  
   const [bullsSearchTree, cowsSearchTree] = await buildSearchTrees(
     solutionSpace
   );
@@ -22,7 +22,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 
   const guess = new SortedSet([1, 2, 3, 0]),
     bulls = 0,
-    cows = 1;
+    cows = 3;
 
   console.time("Updating the solution space");
   [symbolSpace, solutionSpace] = updateSolutionSpace(
@@ -31,7 +31,6 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
     bullsSearchTree,
     cowsSearchTree,
     guess,
-    solutionLength,
     bulls,
     cows
   );
@@ -40,5 +39,5 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 }
 
 const d = 10;
-const n = 4;
+const n = 1;
 game(d, n);
