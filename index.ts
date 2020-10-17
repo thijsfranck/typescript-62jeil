@@ -2,7 +2,8 @@ import {
   calculateSolutionSpace,
   calculateSymbolSpace,
   buildSearchTrees,
-  updateSolutionSpace, makeRandomGuess
+  updateSolutionSpace,
+  makeRandomGuess
 } from "./game";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
