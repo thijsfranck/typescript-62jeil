@@ -2,7 +2,7 @@ import {
   calculateSolutionSpace,
   calculateSymbolSpace,
   buildSearchTrees,
-  updateSolutionSpace
+  updateSolutionSpace, makeRandomGuess
 } from "./game";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
@@ -19,24 +19,10 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   );
   console.timeEnd("Building the search trees");
 
-  const guess = "1",
-    bulls = 0,
-    cows = 2;
-
-  console.time("Updating the solution space");
-  [symbolSpace, solutionSpace] = updateSolutionSpace(
-    symbolSpace,
-    solutionSpace,
-    bullsSearchTree,
-    cowsSearchTree,
-    guess,
-    bulls,
-    cows
-  );
-  console.timeEnd("Updating the solution space");
-  console.log(`Solution space size: ${solutionSpace.size}`);
+  const firstGuess = makeRandomGuess(solutionSpace);
+  console.log(firstGuess);
 }
 
 const d = 10;
-const n = 1;
+const n = 4;
 game(d, n);

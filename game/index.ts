@@ -1,2 +1,3 @@
+export * from "./build-search-trees";
 export * from "./symbols";
-export * from "./solution-space";
+export * from "./calculate-solution-space";
