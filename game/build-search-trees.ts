@@ -25,7 +25,7 @@ function cowsDistance(a: Set<string>, b: Set<string>) {
 
 async function buildBullsSearchTree(solutionSpace: Iterable<string>) {
   const resolver = (a: string, b: string) => a.concat(b);
-  const memoized = memoize(bullsDistance, resolver);
+  const memoized = memoize(bullsDistance, { resolver });
   return VPTree.from(solutionSpace, memoized);
 }
 
@@ -42,6 +42,6 @@ async function buildCowsSearchTree(solutionSpace: Iterable<string>) {
       .split("")
       .sort()
       .join("");
-  const memoized = memoize(lookupFunction, resolver);
+  const memoized = memoize(lookupFunction, { resolver });
   return VPTree.from(solutionSpace, memoized);
 }
