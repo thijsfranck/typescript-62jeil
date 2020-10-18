@@ -1,6 +1,4 @@
 import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
-import VPTree from "mnemonist/vp-tree";
-import { intersection, difference } from "mnemonist/set";
 import { permutations } from "obliterator";
 
 export function calculateSolutionSpace(
