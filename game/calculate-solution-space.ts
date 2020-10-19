@@ -1,7 +1,12 @@
 import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
 import permutations from "obliterator/permutations";
+import { memoize } from "../utils";
 
-export function calculateSolutionSpace(
+export const calculateSolutionSpace = memoize(_calculateSolutionSpace, {
+  resolver: memoResolver
+});
+
+function _calculateSolutionSpace(
   symbolSpace: Iterable<string>,
   solutionLength: number
 ): Set<string> {
@@ -12,4 +17,11 @@ export function calculateSolutionSpace(
     }
   }
   return solutionSpace;
+}
+
+function memoResolver(symbolSpace: Iterable<string>, solutionLength: number) {
+  return [...symbolSpace]
+    .sort()
+    .join("")
+    .concat(solutionLength.toString());
 }
