@@ -49,7 +49,6 @@ function bullsResolver(...solutions: [string, string]) {
 }
 
 function cowsDistance(a: Set<string>, b: Set<string>) {
-  console.log(a, b);
   return difference(a, b).size;
 }
 
