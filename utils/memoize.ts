@@ -35,9 +35,9 @@ export function memoize<T, R>(
     return result;
   }
 
-  Object.defineProperty(memoized, "cache", {
+  const result = Object.defineProperty(memoized, "cache", {
     get: () => cache
   });
 
-  return memoized as MemoizedFunction<T, R>;
+  return result;
 }
