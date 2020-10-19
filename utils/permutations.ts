@@ -11,7 +11,7 @@ export function* permutations<T>(
     if (length === 1) yield [currentItem];
 
     for (const [...permutation] of permutations(seenItems, length - 1)) {
-      for (let i = permutation.length; i >= 0; i--) {
+      for (let i = 0; i < permutation.length; i++) {
         const [...clone] = permutation;
         clone.splice(i, 0, currentItem);
         yield clone;
