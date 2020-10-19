@@ -1,5 +1,5 @@
 import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
-import { permutations } from "obliterator";
+import permutations  from "obliterator/permutations";
 
 export function calculateSolutionSpace(
   symbolSpace: Iterable<string>,

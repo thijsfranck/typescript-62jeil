@@ -30,27 +30,27 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   console.log("Picking a solution...");
   const solution = makeRandomGuess(solutionSpace);
 
+  const turns = [];
   let bulls = 0,
-    cows = 0,
-    turn = 0;
+    cows = 0;
 
   console.log("Solving...");
 
   do {
-    turn++;
-
     const guess = makeRandomGuess(solutionSpace);
 
     bulls = guess.length - bullsDistance(solution, guess);
     cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
 
-    console.log({
-      turn,
+    const turn = {
       guess,
       bulls,
       cows,
       solutionSpace: solutionSpace.size
-    });
+    };
+
+    turns.push(turn);
+    console.debug(turn);
 
     if (cows === 0) {
       symbolSpace = difference(symbolSpace, new Set(guess));
@@ -66,8 +66,10 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 
     solutionSpace.delete(guess);
   } while (bulls < solutionLength);
+
   console.timeEnd("Solved");
-  console.log(`Solved ${solution} in ${turn} turns!`);
+  console.log(`Solved ${solution} in ${turns.length} turns!`);
+  console.table(turns);
 }
 
 const d = 10;
