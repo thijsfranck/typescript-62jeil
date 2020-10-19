@@ -1,9 +1,9 @@
 import VPTree from "mnemonist/vp-tree";
 import { difference } from "mnemonist/set";
-import { memoize } from "../utils";
 import { combinations } from "obliterator";
+import { memoize } from "../utils";
 
-export async function buildCowsSearchTree(
+export function buildCowsSearchTree(
   symbolSpace: Iterable<string>,
   length: number
 ) {
@@ -14,7 +14,7 @@ export async function buildCowsSearchTree(
       solutionSets.set(solution, new Set(solution));
     }
   }
-  
+
   const calculateDistance = (a: string, b: string) =>
     cowsDistance(solutionSets.get(a), solutionSets.get(b));
   const memoized = memoize(calculateDistance, {

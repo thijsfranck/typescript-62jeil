@@ -1,7 +1,7 @@
 import VPTree from "mnemonist/vp-tree";
 import { memoize } from "../utils";
 
-export async function buildBullsSearchTree(solutionSpace: Iterable<string>) {
+export function buildBullsSearchTree(solutionSpace: Iterable<string>) {
   const memoized = memoize(bullsDistance, {
     resolver: memoResolver
   });
