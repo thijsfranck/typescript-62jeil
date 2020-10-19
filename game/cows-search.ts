@@ -7,6 +7,12 @@ export function cowsSearch(
   cows: number,
   isQuerySorted = false
 ): Set<string> {
+  const distance = query.length - cows;
+
+  if (distance === 0) {
+    return new Set(calculatePermutations([query]));
+  }
+
   if (!isQuerySorted) {
     query = query
       .split("")

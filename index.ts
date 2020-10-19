@@ -35,13 +35,13 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
     turn = 0;
 
   console.log("Solving...");
-  
+
   do {
     turn++;
 
     const guess = makeRandomGuess(solutionSpace);
 
-    bulls = guess.length - bullsDistance(guess, solution);
+    bulls = guess.length - bullsDistance(solution, guess);
     cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
 
     console.log({
@@ -57,12 +57,13 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
         solutionSpace,
         calculateSolutionSpace(symbolSpace, solutionLength)
       );
-    } else if (bulls < 4) {
+    } else if (bulls < solutionLength) {
       const byBulls = bullsSearch(bullsSearchTree, guess, bulls);
       const byCows = cowsSearch(cowsSearchTree, guess, cows);
       solutionSpace = intersection(solutionSpace, byBulls, byCows);
     }
-  } while (bulls !== 4);
+    solutionSpace.delete(guess);
+  } while (bulls < solutionLength);
   console.timeEnd("Solved");
   console.log(`Solved ${solution} in ${turn} turns!`);
 }
