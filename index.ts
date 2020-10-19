@@ -48,7 +48,8 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
       turn,
       guess,
       bulls,
-      cows
+      cows,
+      solutionSpace: solutionSpace.size
     });
 
     if (cows === 0) {
@@ -57,11 +58,12 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
         solutionSpace,
         calculateSolutionSpace(symbolSpace, solutionLength)
       );
-    } else if (bulls < solutionLength) {
+    } else if (bulls < solutionLength && cows > 1) {
       const byBulls = bullsSearch(bullsSearchTree, guess, bulls);
       const byCows = cowsSearch(cowsSearchTree, guess, cows);
       solutionSpace = intersection(solutionSpace, byBulls, byCows);
     }
+
     solutionSpace.delete(guess);
   } while (bulls < solutionLength);
   console.timeEnd("Solved");
@@ -69,5 +71,5 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 }
 
 const d = 10;
-const n = 4;
+const n = 6;
 game(d, n);
