@@ -19,16 +19,21 @@ async function buildBullsSearchTree(solutionSpace: Iterable<string>) {
 }
 
 async function buildCowsSearchTree(solutionSpace: Iterable<string>) {
-  const solutionSets = {};
+  const solutionSets = new Map<string, Set<string>>();
+
   for (const solution of solutionSpace) {
-    solutionSets[solution] = new Set(solution);
+    const sorted = sortString(solution);
+    if (!solutionSets.has(sorted)) {
+      solutionSets.set(sorted, new Set(sorted));
+    }
   }
   const calculateDistance = (a: string, b: string) =>
-    cowsDistance(solutionSets[a], solutionSets[b]);
+    cowsDistance(solutionSets.get(a), solutionSets.get(b));
   const memoized = memoize(calculateDistance, {
     resolver: cowsResolver
   });
-  return VPTree.from(solutionSpace, memoized);
+
+  return VPTree.from(solutionSets.keys(), memoized);
 }
 
 function bullsDistance(a: string, b: string) {
@@ -44,12 +49,16 @@ function bullsResolver(...solutions: [string, string]) {
 }
 
 function cowsDistance(a: Set<string>, b: Set<string>) {
+  console.log(a, b);
   return difference(a, b).size;
 }
 
 function cowsResolver(a: string, b: string) {
-  return a
-    .concat(b)
+  return sortString(a.concat(b));
+}
+
+function sortString(str: string) {
+  return str
     .split("")
     .sort()
     .join("");
