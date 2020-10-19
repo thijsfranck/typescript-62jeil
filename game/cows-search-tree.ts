@@ -3,7 +3,6 @@ import { difference } from "mnemonist/set";
 import { memoize } from "../utils";
 import { combinations } from "obliterator";
 
-
 export async function buildCowsSearchTree(
   symbolSpace: Iterable<string>,
   length: number
@@ -15,7 +14,7 @@ export async function buildCowsSearchTree(
       solutionSets.set(solution, new Set(solution));
     }
   }
-
+  
   const calculateDistance = (a: string, b: string) =>
     cowsDistance(solutionSets.get(a), solutionSets.get(b));
   const memoized = memoize(calculateDistance, {
@@ -24,8 +23,6 @@ export async function buildCowsSearchTree(
 
   return VPTree.from(solutionSets.keys(), memoized);
 }
-
-
 
 function cowsDistance(a: Set<string>, b: Set<string>) {
   return difference(a, b).size;

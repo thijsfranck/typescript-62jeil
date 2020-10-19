@@ -1,7 +1,6 @@
 import {
   calculateSolutionSpace,
   calculateSymbolSpace,
-  updateSolutionSpace,
   buildBullsSearchTree,
   buildCowsSearchTree,
   makeRandomGuess
