@@ -14,9 +14,8 @@ export async function buildCowsSearchTree(
   symbolSpace: Iterable<string>,
   length: number
 ) {
-  const solutions = combinations([...symbolSpace], length);
   const solutionSets = new Map<string, Set<string>>();
-  for (const combination of solutions) {
+  for (const combination of combinations([...symbolSpace], length)) {
     const solution = combination.join("");
     if (!solutionSets.has(solution)) {
       solutionSets.set(solution, new Set(solution));
