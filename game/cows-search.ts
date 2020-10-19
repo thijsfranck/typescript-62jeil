@@ -1,6 +1,6 @@
 import VPTree from "mnemonist/vp-tree";
-import permutations from "obliterator/permutations";
-import { ILLEGAL_STARTING_CHARACTER } from "./symbols";
+import { add } from "mnemonist/set";
+import { calculateSolutionSpace } from "./calculate-solution-space";
 
 export function cowsSearch(
   tree: VPTree<string>,
@@ -11,7 +11,7 @@ export function cowsSearch(
   const distance = query.length - cows;
 
   if (distance === 0) {
-    return calculatePermutations([query]);
+    return calculateSolutions([query]);
   }
 
   if (!isQuerySorted) {
@@ -23,16 +23,13 @@ export function cowsSearch(
 
   const neighbors = tree.neighbors(query.length - cows, query);
 
-  return calculatePermutations(neighbors.map(neighbor => neighbor.item));
+  return calculateSolutions(neighbors.map(neighbor => neighbor.item));
 }
 
-function calculatePermutations(items: Iterable<string>) {
+function calculateSolutions(items: Iterable<string>) {
   const result = new Set<string>();
   for (const item of items) {
-    for (const permutation of permutations(item.split(""), item.length)) {
-      if (permutation[0] !== ILLEGAL_STARTING_CHARACTER)
-        result.add(permutation.join(""));
-    }
+    add(result, calculateSolutionSpace(item, item.length));
   }
   return result;
 }
