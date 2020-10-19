@@ -32,7 +32,8 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
     cows = 0,
     turn = 0;
 
-  console.log("Guessing...")
+  console.log("Guessing...");
+  
   do {
     turn++;
 
