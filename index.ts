@@ -12,20 +12,27 @@ import { cowsSearch } from "./game/cows-search";
 import { difference, intersection } from "mnemonist/set";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
-  console.log("Preparing the game...")
+  console.log(
+    "Rules",
+    `Possible characters: ${symbolSpaceLength}`,
+    `Solution length: ${solutionLength}`
+  );
+  console.log("Preparing the game...");
+
   let symbolSpace = calculateSymbolSpace(symbolSpaceLength),
     solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
 
   const bullsSearchTree = buildBullsSearchTree(solutionSpace),
     cowsSearchTree = buildCowsSearchTree(symbolSpace, solutionLength);
 
-  console.log("Picking a solution...")
+  console.log("Picking a solution...");
   const solution = makeRandomGuess(solutionSpace);
 
   let bulls = 0,
     cows = 0,
     turn = 0;
 
+  console.log("Guessing...")
   do {
     turn++;
 
