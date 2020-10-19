@@ -1,8 +1,9 @@
 import {
   calculateSolutionSpace,
   calculateSymbolSpace,
-  buildSearchTrees,
   updateSolutionSpace,
+  buildBullsSearchTree,
+  buildCowsSearchTree,
   makeRandomGuess
 } from "./game";
 
@@ -15,9 +16,10 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   console.log(`Initial solution space size: ${solutionSpace.size}`);
   console.time("Building the search trees");
 
-  const [bullsSearchTree, cowsSearchTree] = await buildSearchTrees(
-    solutionSpace
-  );
+  const [bullsSearchTree, cowsSearchTree] = await Promise.all([
+    buildBullsSearchTree(solutionSpace),
+    buildCowsSearchTree(symbolSpace, solutionLength)
+  ]);
   console.timeEnd("Building the search trees");
 
   const firstGuess = makeRandomGuess(solutionSpace);
@@ -25,5 +27,5 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 }
 
 const d = 10;
-const n = 5;
+const n = 4;
 game(d, n);
