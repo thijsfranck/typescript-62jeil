@@ -24,7 +24,7 @@ export function buildCowsSearchTree(
   return VPTree.from(solutionSets.keys(), memoized);
 }
 
-function cowsDistance(a: Set<string>, b: Set<string>) {
+export function cowsDistance(a: Set<string>, b: Set<string>) {
   return difference(a, b).size;
 }
 

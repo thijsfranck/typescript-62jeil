@@ -8,7 +8,7 @@ export function buildBullsSearchTree(solutionSpace: Iterable<string>) {
   return VPTree.from(solutionSpace, memoized);
 }
 
-function bullsDistance(a: string, b: string) {
+export function bullsDistance(a: string, b: string) {
   let result = 0;
   for (let i = 0; i < a.length; i++) {
     if (a[i] !== b[i]) result++;

@@ -3,47 +3,58 @@ import {
   calculateSymbolSpace,
   buildBullsSearchTree,
   buildCowsSearchTree,
-  makeRandomGuess
+  makeRandomGuess,
+  bullsDistance,
+  cowsDistance
 } from "./game";
 import { bullsSearch } from "./game/bulls-search";
 import { cowsSearch } from "./game/cows-search";
-import { intersection } from "mnemonist/set";
+import { difference, intersection } from "mnemonist/set";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
-  let symbolSpace = calculateSymbolSpace(symbolSpaceLength);
+  console.log("Preparing the game...")
+  let symbolSpace = calculateSymbolSpace(symbolSpaceLength),
+    solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
 
-  console.time("Calculating the initial solution space");
-  let solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
-  console.timeEnd("Calculating the initial solution space");
-  console.log(`Initial solution space size: ${solutionSpace.size}`);
-  console.time("Building the bulls search tree");
-  const bullsSearchTree = buildBullsSearchTree(solutionSpace);
-  console.timeEnd("Building the bulls search tree");
+  const bullsSearchTree = buildBullsSearchTree(solutionSpace),
+    cowsSearchTree = buildCowsSearchTree(symbolSpace, solutionLength);
 
-  console.time("Building the cows search tree");
-  const cowsSearchTree = buildCowsSearchTree(symbolSpace, solutionLength);
-  console.timeEnd("Building the cows search tree");
+  console.log("Picking a solution...")
+  const solution = makeRandomGuess(solutionSpace);
 
-  const firstGuess = makeRandomGuess(solutionSpace);
-  console.log(firstGuess);
+  let bulls = 0,
+    cows = 0,
+    turn = 0;
 
-  const bulls = 1,
-    cows = 2;
+  do {
+    turn++;
 
-  console.time("Querying bulls");
-  const byBulls = bullsSearch(bullsSearchTree, firstGuess, bulls);
-  console.timeEnd("Querying bulls");
-  console.log("By bulls", byBulls);
+    const guess = makeRandomGuess(solutionSpace);
 
-  console.time("Querying cows");
-  const byCows = cowsSearch(cowsSearchTree, firstGuess, bulls + cows);
-  console.timeEnd("Querying cows");
-  console.log("By cows", byCows);
+    bulls = guess.length - bullsDistance(guess, solution);
+    cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
 
-  console.time("Merging query results")
-  solutionSpace = intersection(byBulls, byCows);
-  console.timeEnd("Merging query results")
-  console.log("Solution space", solutionSpace);
+    console.log({
+      turn,
+      guess,
+      bulls,
+      cows
+    });
+
+    if (cows === 0) {
+      symbolSpace = difference(symbolSpace, new Set(guess));
+      solutionSpace = intersection(
+        solutionSpace,
+        calculateSolutionSpace(symbolSpace, solutionLength)
+      );
+    } else if (bulls < 4) {
+      const byBulls = bullsSearch(bullsSearchTree, guess, bulls);
+      const byCows = cowsSearch(cowsSearchTree, guess, cows);
+      solutionSpace = intersection(solutionSpace, byBulls, byCows);
+    }
+  } while (bulls !== 4);
+
+  console.log(`Solved ${solution} in ${turn} turns!`);
 }
 
 const d = 10;

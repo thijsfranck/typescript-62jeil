@@ -25,7 +25,7 @@ export function cowsSearch(
 function* calculatePermutations(items: Iterable<string>) {
   for (const item of items) {
     for (const permutation of permutations(item.split(""), item.length)) {
-      yield permutation.join("");
+      if (permutation[0] !== "0") yield permutation.join("");
     }
   }
 }
