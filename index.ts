@@ -19,6 +19,8 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   );
   console.log("Preparing the game...");
 
+  console.time("Solved");
+
   let symbolSpace = calculateSymbolSpace(symbolSpaceLength),
     solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
 
@@ -32,7 +34,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
     cows = 0,
     turn = 0;
 
-  console.log("Guessing...");
+  console.log("Solving...");
   
   do {
     turn++;
@@ -61,7 +63,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
       solutionSpace = intersection(solutionSpace, byBulls, byCows);
     }
   } while (bulls !== 4);
-
+  console.timeEnd("Solved");
   console.log(`Solved ${solution} in ${turn} turns!`);
 }
 
