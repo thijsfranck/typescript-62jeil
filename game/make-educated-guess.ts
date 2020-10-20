@@ -16,7 +16,7 @@ export function makeEducatedGuess(
   for (const { bulls, cows, guess } of turns) {
     for (const key of guess) {
       if (bulls) bullsCount = increment(bullsCount, key, bulls);
-      if (cows) cowsCount = increment(cowsCount, key, guess.length - cows);
+      if (cows) cowsCount = increment(cowsCount, key, cows);
     }
   }
 
@@ -28,13 +28,14 @@ export function makeEducatedGuess(
   for (const solution of solutionSpace) {
     let solutionScore = 0;
     for (const key of solution) {
-      solutionScore = solutionScore + bullsCount[key] + cowsCount[key];
+      solutionScore += bullsCount.get(key) - cowsCount.get(key);
     }
     if (!guess || solutionScore > maxScore) {
       guess = solution;
       maxScore = solutionScore;
     }
   }
+
   return guess;
 }
 
