@@ -3,6 +3,7 @@ import {
   calculateSymbolSpace,
   buildBullsSearchTree,
   buildCowsSearchTree,
+  makeEducatedGuess,
   makeRandomGuess,
   bullsDistance,
   cowsDistance
@@ -30,14 +31,16 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   console.log("Picking a solution...");
   const solution = makeRandomGuess(solutionSpace);
 
-  const turns = [];
+  const turns: Turn[] = [];
   let bulls = 0,
     cows = 0;
 
   console.log("Solving...");
 
   do {
-    const guess = makeRandomGuess(solutionSpace);
+    console.time("Making a guess");
+    const guess = makeEducatedGuess(turns, solutionSpace);
+    console.timeEnd("Making a guess");
 
     bulls = guess.length - bullsDistance(solution, guess);
     cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
